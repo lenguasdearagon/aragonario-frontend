@@ -128,7 +128,8 @@
           <div class="col-12 col-xl-5 order-0 order-xl-12">
             <div class="d-xl-flex flex-row-reverse">
             <div id="topicMenuContainer" class="d-inline-flex">
-              <div class="d-inline-flex" style="max-width: 210px;">
+              <div class="d-inline-flex" style="max-width: 315px;">
+               <!-- max-width == 105px * number of visible elements when collapsed  -->
                <div class="topic-item-wrapper">
                  <div id="topic-general" class="topic-item {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon %}active{% endif %}"
                    data-lexicode="es-ar" data-lexidesc="castellano-aragonés">
@@ -136,6 +137,16 @@
                    <div class="topic-title">Diccionario general</div>
                  </div>
                </div>
+               <div class="topic-item-wrapper">
+                <div id="topic-definition"
+                    class="topic-item {% if 'an-an' == selected_lexicon %}active{% endif %}"
+                    data-lexicode="an-an" data-lexidesc="Definición en aragonés"
+                    data-logo-caption="Diccionario<br>de aragonés">
+                    <!-- <span class="lexicon-general-icon"></span> -->
+                    <i class="fal fa-book fa-2x"></i><!-- TODO: replace with final icon -->
+                    <div class="topic-title">Definición aragonés</div>
+                </div>
+            </div>
                <div id="topic-toggler-wrapper" class="topic-item-wrapper">
                  <div id="topic-toggler-base" class="topic-item topic-toggler">
                    <i class="{{ fa_class }} fa-ellipsis-v fa-2x"></i>
