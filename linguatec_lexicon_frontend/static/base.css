@@ -2,10 +2,10 @@
     font-family: 'Charter-Bold';
     src: url('fonts/Charter-Bold.eot');
     src: url('fonts/Charter-Bold.eot?#iefix') format('embedded-opentype'),
-         url('fonts/Charter-Bold.woff2') format('woff2'),
-         url('fonts/Charter-Bold.woff') format('woff'),
-         url('fonts/Charter-Bold.ttf')  format('truetype'),
-         url('fonts/Charter-Bold.svg#Charter') format('svg');
+        url('fonts/Charter-Bold.woff2') format('woff2'),
+        url('fonts/Charter-Bold.woff') format('woff'),
+        url('fonts/Charter-Bold.ttf') format('truetype'),
+        url('fonts/Charter-Bold.svg#Charter') format('svg');
 }
 
 body {
@@ -20,11 +20,16 @@ a:hover {
     color: #c8c8c8;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-variant: small-caps;
 }
 
-h1, h2, h3, p {
+h1,
+h2,
+h3,
+p {
     color: #333;
 }
 
@@ -140,7 +145,8 @@ body.home {
     background-position-y: bottom;
     background-repeat: no-repeat;
     height: 18px;
-    margin-top: -1px; /** avoid white line on render **/
+    margin-top: -1px;
+    /** avoid white line on render **/
 }
 
 header.rg-header .navbar {
@@ -179,7 +185,8 @@ header.rg-header .navbar-toggler .fa-bars {
     color: #333333;
     box-shadow: -7px 4px 4px rgba(0, 0, 0, 0.4);
     padding: 0;
-    z-index: 1060;  /** greater than fixed bottom logos **/
+    z-index: 1060;
+    /** greater than fixed bottom logos **/
     overflow-y: scroll;
     max-height: 100%;
 }
@@ -217,7 +224,8 @@ header.rg-header .navbar-toggler .fa-bars {
     margin-top: 0.65em;
     font-size: 1.4rem;
     color: #333333;
-    height: 3em;  /** keep space although # lines change **/
+    height: 3em;
+    /** keep space although # lines change **/
 }
 
 footer.rg-footer {
@@ -328,19 +336,22 @@ footer.rg-footer {
     border-width: 0;
     min-width: 62px;
     color: white;
+    background: #fc565b;
 }
 
-.ar-es, .es-ar {
+.ar-es,
+.es-ar {
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .ar-es {
-    background-image: url('lexicon-button-a-c-colour.svg');
+    background-image: url('lexicon-button-ara-cast.png');
 }
 
 .es-ar {
-    background-image: url('lexicon-button-c-a-colour.svg');
+    background-image: url('lexicon-button-cast-ara.svg');
 }
 
 .lexicon-general-icon {
@@ -351,10 +362,6 @@ footer.rg-footer {
     background-size: contain;
     width: 2em;
     height: 2em;
-}
-
-.home-content #topic-general:not(.active) .lexicon-general-icon {
-    background-image: url("lexicon-general-icon-colour.png");
 }
 
 .home-content .lexicon-general-icon {
@@ -377,6 +384,7 @@ footer.rg-footer {
     position: absolute;
     opacity: 0;
 }
+
 .home-content .unfolded .topic-item-wrapper:not(#topic-toggler-wrapper) {
     /* replace display by visibility to be able to apply transitions */
     position: static;
@@ -466,8 +474,10 @@ footer.rg-footer {
 #topicMenuContainer .topic-menu-wrapper {
     overflow-x: scroll;
     /** hidde scrollbar **/
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
     transition: all 1s ease-out;
     flex: 1;
 }
@@ -479,7 +489,8 @@ footer.rg-footer {
 
 /** hidde scrollbar **/
 #topicMenuContainer .topic-menu-wrapper::-webkit-scrollbar {
-    display: none;  /* Safari and Chrome */
+    display: none;
+    /* Safari and Chrome */
 }
 
 /** end topic lexicon menu **/
@@ -507,6 +518,13 @@ footer.rg-footer {
 .rg-search-results .rg-word:hover .anchorjs-link,
 .rg-search-results .rg-word:active .anchorjs-link {
     opacity: 1;
+}
+
+.rg-search-results .rg-word-etimology {
+    display: inline-block;
+    background-color: aliceblue;
+    display: inline-block;
+    padding: 0.2em 0.5em;
 }
 
 .rg-search-results .rg-gramcat,
@@ -819,13 +837,10 @@ a.ref-external::after {
         margin-right: 0;
     }
 
-    .home .rg-main .rg-search .ar-es {
-        background-image: url('lexicon-button-a-c-grey.svg');
+    .home .rg-main .button-lexicon-change {
+        background-color: #333333;
     }
 
-    .home .rg-main .rg-search .es-ar {
-        background-image: url('lexicon-button-c-a-grey.svg');
-    }
 }
 
 /** sm rules **/
@@ -855,24 +870,18 @@ a.ref-external::after {
 
 /** md rules and smaller **/
 @media (max-width: 991.98px) {
+
     .navbar .ar-es,
     .navbar .es-ar {
         height: 34px;
         min-width: 34px;
         border-radius: 5px;
         margin-right: 0.5rem;
-    }
-    .navbar .ar-es {
-        background-image: url('lexicon-button-a-c-grey.svg');
-    }
-
-    .navbar .es-ar {
-        background-image: url('lexicon-button-c-a-grey.svg');
+        background-color: #333333;
     }
 
     .navbar .button-topic {
         background: #333333;
-        color: #333333;
         color: white;
     }
 
@@ -886,6 +895,9 @@ a.ref-external::after {
         display: none;
     }
 
+    .home-content #topic-general:not(.active) .lexicon-general-icon {
+        background-image: url("lexicon-general-icon-colour.png");
+    }
 }
 
 /** only md rules **/
@@ -906,7 +918,8 @@ a.ref-external::after {
     }
 
     .home .rg-main {
-        padding: 0 15px; /** restore BS container style **/
+        padding: 0 15px;
+        /** restore BS container style **/
         margin-top: 4rem;
     }
 
@@ -1198,7 +1211,7 @@ a.ref-external::after {
         flex: 1;
     }
 
-    #topicMenuContainer  .topic-menu-wrapper.collapsed {
+    #topicMenuContainer .topic-menu-wrapper.collapsed {
         width: 0;
         flex: 1;
     }
@@ -1207,7 +1220,7 @@ a.ref-external::after {
 /** xxl rules (custom RG breakpoint) **/
 @media (min-width: 1440px) {
     .d-xxl-none {
-        display: none!important;
+        display: none !important;
     }
 
     .home .rg-header {

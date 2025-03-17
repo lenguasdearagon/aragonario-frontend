@@ -3,17 +3,23 @@
 <article>
     <header class="rg-word">
         <h2 id="word-{{ word.slug }}">
-          {{ word|render_term:selected_lexicon }}
-          {# <!-- TODO @slamora: Move this include to filter (or create templatetag)--> #}
-          {% if selected_lexicon == "ar-es" %}
+            {{ word|render_term:selected_lexicon }}
+            {# <!-- TODO @slamora: Move this include to filter (or create templatetag)--> #}
+            {% if selected_lexicon == "ar-es" %}
             {% include "linguatec_lexicon_frontend/components/speaker-player.html" with wordid=word.id %}
-          {% endif %}
-          {% if word.is_regular_verb %}<a class="btn btn-outline-secondary ml-3" href="{% url 'word-conjugation' word.term %}">Conjugar</a>{% endif %}
-          {% if word.admin_panel_url %}<a href= {{ word.admin_panel_url }}> (edit) </a>{% endif %}
-          <a class="anchorjs-link" aria-label="Anchor" title="Enlace permanente" href="{% url 'word-detail-by-slug' word.slug %}">
-            <i class="{{ fa_class }} fa-link"></i></a>
+            {% endif %}
+            {% if word.is_regular_verb %}<a class="btn btn-outline-secondary ml-3"
+                href="{% url 'word-conjugation' word.term %}">Conjugar</a>{% endif %}
+            {% if word.admin_panel_url %}<a href={{ word.admin_panel_url }}> (edit) </a>{% endif %}
+            <a class="anchorjs-link" aria-label="Anchor" title="Enlace permanente"
+                href="{% url 'word-detail-by-slug' word.slug %}">
+                <i class="{{ fa_class }} fa-link"></i></a>
         </h2>
-
+        {% if word.etimol %}
+        <span class="rg-word-etimology">
+            {{ word.etimol|safe }}
+        </span>
+        {% endif %}
     </header>
     <div class="rg-entries">
 

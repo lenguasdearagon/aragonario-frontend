@@ -3,7 +3,6 @@ Unit tests.
 """
 
 import unittest
-
 from unittest import mock
 
 from linguatec_lexicon_frontend.templatetags import linguatec
@@ -80,8 +79,8 @@ class RenderTermTest(unittest.TestCase):
         output = linguatec.render_term(word, "ar-es")
         self.assertEqual(
             '<span id="word_3">'
-                'escusón<span class="rs_skip">/ona</span>, '
-                'forrón<span class="rs_skip">/ona</span>'
+            'escusón<span class="rs_skip">/ona</span>, '
+            'forrón<span class="rs_skip">/ona</span>'
             '</span>', output)
 
 
@@ -91,7 +90,7 @@ class SkipVariantSuffixTest(unittest.TestCase):
         output = linguatec.readspeaker_skip_variant_suffix(value)
         self.assertEqual(
             '<span>escusón'
-                '<span class="rs_skip">/ona</span>'
+            '<span class="rs_skip">/ona</span>'
             '</span>', output)
 
 
@@ -116,3 +115,47 @@ class IsRegularVerbTestCase(unittest.TestCase):
             "term": "mercader",
         }
         self.assertFalse(is_regular_verb(word))
+
+
+@mock.patch(
+    'linguatec_lexicon_frontend.utils.retrieve_gramcats',
+    return_value=[
+        {"abbreviation": "s.", "title": "sustantivo"},
+        {"abbreviation": "s. f.", "title": "sustantivo femenino"},
+        {"abbreviation": "s. m.", "title": "sustantivo masculino"},
+        {"abbreviation": "v. tr.", "title": "verbo transitivo"},
+        {"abbreviation": "v. intr.", "title": "verbo intransitivo"},
+    ]
+)
+class HightlightInlineGramCats(unittest.TestCase):
+    def test_one(self, retrieve_gramcats):
+        # es-ar: desfiladero --> gáriz (s. f. )
+        input = "gáriz (s. f. )"
+        expected = "gáriz (<span class='rg-gramcat' title='sustantivo femenino'>s. f.</span> )"
+
+        output = linguatec.highlight_gramcats_inline(input)
+        self.assertEqual(expected, output)
+
+    def test_two(self, retrieve_gramcats):
+        # an-an: au
+        input = "... tiene amnios y alantoides."
+        expected = "... tiene amnios y alantoides."
+
+        output = linguatec.highlight_gramcats_inline(input)
+        self.assertEqual(expected, output)
+
+    def test_three(self, retrieve_gramcats):
+        # es-ar: destacar |	v. tr. // v. intr. | (resaltar, poner de relieve) acobaltar // v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a // v. tr. (adelantar una porción de tropa, separándola del cuerpo principal) abanzar (del lat. vulgar abantiare)
+        input = "v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a"
+        expected = "<span class='rg-gramcat' title='verbo intransitivo'>v. intr.</span> (sobresalir, decollar) sobrexir, estar siñalero/a"
+
+        output = linguatec.highlight_gramcats_inline(input)
+        self.assertEqual(expected, output)
+
+    def test_four(self, retrieve_gramcats):
+        # es-ar: bandurria común
+        input = "iba cuelliblanca (s. f.), ibis cuelliblanco (s. m.)"
+        expected = "iba cuelliblanca (<span class='rg-gramcat' title='sustantivo femenino'>s. f.</span>), ibis cuelliblanco (<span class='rg-gramcat' title='sustantivo masculino'>s. m.</span>)"
+
+        output = linguatec.highlight_gramcats_inline(input)
+        self.assertEqual(expected, output)

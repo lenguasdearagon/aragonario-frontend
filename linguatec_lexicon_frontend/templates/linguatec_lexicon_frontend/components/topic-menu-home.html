@@ -1,4 +1,20 @@
 <div id="topic-menu" class="d-flex flex-wrap">
+  <div class="topic-item-wrapper" style="opacity: 1; position: relative; z-index: 100;">
+    <div id="topic-general"
+      class="topic-item {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon %}active{% endif %}"
+      data-lexicode="es-ar" data-lexidesc="castellano-aragonés"
+      data-logo-caption="Diccionario<br>castellano/aragonés<br>aragonés/castellano">
+      <span class="lexicon-general-icon"></span>
+      <div class="topic-title">Diccionario general</div>
+    </div>
+  </div>
+  <div class="topic-item-wrapper" style="opacity: 1; position: relative; z-index: 100;">
+    <div id="topic-definition" class="topic-item {% if 'an-an' == selected_lexicon %}active{% endif %}"
+      data-lexicode="an-an" data-lexidesc="Definizión en aragonés" data-logo-caption="Diccionario<br>de aragonés">
+      <i class="fal fa-book fa-3x"></i>
+      <div class="topic-title">Definizión aragonés</div>
+    </div>
+  </div>
   <div id="topic-toggler-wrapper" class="topic-item-wrapper">
     <div id="topic-toggler" class="topic-item topic-toggler">
       <i class="{{ fa_class }} fa-ellipsis-v fa-3x"></i>
@@ -7,7 +23,8 @@
   </div>
   {# <!-- keep topic-general because is needed by JS but don't display it--> #}
   <div class="topic-item-wrapper d-none">
-    <div id="topic-general" class="topic-item {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon %}active{% endif %}"
+    <div id="topic-general"
+      class="topic-item {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon %}active{% endif %}"
       data-lexicode="es-ar" data-lexidesc="castellano-aragonés">
       <span class="lexicon-general-icon"></span>
       <div class="topic-title">Diccionario general</div>

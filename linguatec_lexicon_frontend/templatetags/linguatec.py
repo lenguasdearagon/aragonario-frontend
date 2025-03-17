@@ -1,10 +1,10 @@
 """
 Templatetags helpers to render lexicon content.
 """
-import coreapi
 import re
 import urllib.parse
 
+import coreapi
 from django import template
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -12,7 +12,6 @@ from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 
 from linguatec_lexicon_frontend import utils, validators
-
 
 register = template.Library()
 
@@ -62,7 +61,12 @@ def highlight_gramcats_inline(value):
                 abbr_subset = True
                 break
 
-        if not abbr_subset and abbr in value:
+        if abbr_subset:
+            continue
+
+        # TODO(@slamora): are other expressions needed?
+        expressions = [f"{abbr} ", f"({abbr})"]
+        if any(expr in value for expr in expressions):
             abbr_replaced.append(abbr)
             value = value.replace(
                 abbr, "<span class='rg-gramcat' title='{0}'>{1}</span>".format(title, abbr))

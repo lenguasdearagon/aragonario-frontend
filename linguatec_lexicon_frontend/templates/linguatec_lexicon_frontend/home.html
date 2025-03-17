@@ -12,24 +12,24 @@
 {% block home_header %}
 <!-- open sidebar menu -->
 <div class="d-none d-md-block d-xxl-none">
-  <a class="btn open-menu" href="#" role="button">
-    <i class="{{ fa_class }} fa-bars fa-2x"></i>
-  </a>
+    <a class="btn open-menu" href="#" role="button">
+        <i class="{{ fa_class }} fa-bars fa-2x"></i>
+    </a>
 </div>
 
 <!-- sidebar menu -->
 <!-- external links (for md & larger)-->
 <nav class="sidebar">
-  <div class="d-none d-md-block navbar-light">
-    <!-- close sidebar menu -->
-    <button type="button" class="btn dismiss">
-      <i class="{{ fa_class }} fa-times fa-2x"></i>
-    </button>
-    <div class="navbar-nav menu-elements">
-      {% include "linguatec_lexicon_frontend/components/external-links.html" with navbar=True %}
-      {% include "linguatec_lexicon_frontend/components/navbar-menu.html" %}
+    <div class="d-none d-md-block navbar-light">
+        <!-- close sidebar menu -->
+        <button type="button" class="btn dismiss">
+            <i class="{{ fa_class }} fa-times fa-2x"></i>
+        </button>
+        <div class="navbar-nav menu-elements">
+            {% include "linguatec_lexicon_frontend/components/external-links.html" with navbar=True %}
+            {% include "linguatec_lexicon_frontend/components/navbar-menu.html" %}
+        </div>
     </div>
-  </div>
 </nav>
 <!-- end of external links -->
 {% endblock %}
@@ -38,21 +38,21 @@
 
 <div class="home-content row justify-content-center">
     <div class="d-none d-md-block col-md col-lg-4 justify-content-end" id="aragonarioLogo">
-      <div class="logo-caption">
-        Diccionario<br>
-        castellano/aragonés<br>
-        aragonés/castellano
-      </div>
+        <div class="logo-caption">
+            Diccionario<br>
+            castellano/aragonés<br>
+            aragonés/castellano
+        </div>
     </div>
     <div class="col-12 col-sm-10 d-md-none" id="aragonarioLogoMobile">
-        <img alt="Aragonario: Diccionario castellano - aragonés"
-            src="{% static 'aragonario-darkgray-only-logo.svg' %}" width="330" height="139" />
+        <img alt="Aragonario: Diccionario castellano - aragonés" src="{% static 'aragonario-darkgray-only-logo.svg' %}"
+            width="330" height="139" />
         <div class="logo-caption">
-          Diccionario<br>
-          castellano/aragonés<br>
-          aragonés/castellano
+            Diccionario<br>
+            castellano/aragonés<br>
+            aragonés/castellano
         </div>
-      </div>
+    </div>
 
     <div class="col-sm-10 col-md-7 col-lg-7" id="homeSearch">
         {% include "linguatec_lexicon_frontend/components/search-tools.html" %}
@@ -75,9 +75,9 @@
 {% if first_load %}
 <script>
     $(document).ready(function () {
-        setInterval(function() {
+        setInterval(function () {
             $("#loading_overlay").hide(400);
-        }, 2000);
+        }, 50);
     });
 </script>
 {% endif %}

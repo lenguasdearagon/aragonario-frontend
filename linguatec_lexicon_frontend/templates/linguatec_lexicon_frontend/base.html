@@ -3,260 +3,272 @@
 <html lang="es">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    {% block responsive %}
-    <meta name="viewport" content="width=device-width, maximum-scale=1, shrink-to-fit=no">
-    {% endblock %}
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  {% block responsive %}
+  <meta name="viewport" content="width=device-width, maximum-scale=1, shrink-to-fit=no">
+  {% endblock %}
 
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'favicons/site.webmanifest' %}">
-    <link rel="mask-icon" href="{% static 'favicons/safari-pinned-tab.svg' %}" color="#fc565b">
-    <link rel="shortcut icon" href="{% static 'favicons/favicon.ico' %}">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="{% static 'favicons/browserconfig.xml' %}">
-    <meta name="theme-color" content="#ffffff">
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'favicons/site.webmanifest' %}">
+  <link rel="mask-icon" href="{% static 'favicons/safari-pinned-tab.svg' %}" color="#fc565b">
+  <link rel="shortcut icon" href="{% static 'favicons/favicon.ico' %}">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="{% static 'favicons/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-    {% if fa_class == 'fas' %}
-    <!-- Font Awesome Free -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
-      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
-    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
+  {% if fa_class == 'fas' %}
+  <!-- Font Awesome Free -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+    integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
+  <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
 
-    {% elif fa_class == 'fal' %}
-    <!-- Font Awesome PRO SVG -->
-    <script defer src="{% static 'fontawesome/js/light.js' %}"></script>
-    <script defer src="{% static 'fontawesome/js/fontawesome.js' %}"></script>
-    <script data-search-pseudo-elements defer src="{% static 'fontawesome/js/all.js' %}" data-auto-replace-svg="nest"></script>
-    {% endif %}
+  {% elif fa_class == 'fal' %}
+  <!-- Font Awesome PRO SVG -->
+  <script defer src="{% static 'fontawesome/js/light.js' %}"></script>
+  <script defer src="{% static 'fontawesome/js/fontawesome.js' %}"></script>
+  <script data-search-pseudo-elements defer src="{% static 'fontawesome/js/all.js' %}"
+    data-auto-replace-svg="nest"></script>
+  {% endif %}
 
-    <!-- JQuery UI -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/blitzer/jquery-ui.css">
+  <!-- JQuery UI -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/blitzer/jquery-ui.css">
 
-    <!-- fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+  <!-- fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 
-    <link rel="stylesheet" href="{% static 'base.css' %}">
-    <link rel="stylesheet" href="{% static 'numbering-headers.css' %}">
-    {% if fa_class == 'fal' %}
-    <link rel="stylesheet" href="{% static 'fa-pro.css' %}">
-    {% endif %}
-    {% block extrastyle %}{% endblock %}
-    <title>{% block title %}Aragonario - diccionario castellano - aragonés{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'base.css' %}">
+  <link rel="stylesheet" href="{% static 'numbering-headers.css' %}">
+  {% if fa_class == 'fal' %}
+  <link rel="stylesheet" href="{% static 'fa-pro.css' %}">
+  {% endif %}
+  {% block extrastyle %}{% endblock %}
+  <title>{% block title %}Aragonario - diccionario castellano - aragonés{% endblock %}</title>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115543414-2"></script>
-    <script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115543414-2"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'UA-115543414-2');
-    </script>
+  </script>
 </head>
 
 <body class="{% block bodyclass %}base{% endblock %}">
-    <header class="container-fluid rg-header">
-        <div class="rg-header-container row">
-            <div class="rg-header-content col-12">
-                <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
-                    <div class="navbar-brand">
-                        {% block branding %}{% endblock %}
-                    </div>
-                    {% block menu-lexicon-change %}
-                    {% endblock %}
-                    <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="{{ fa_class }} fa-bars" aria-hidden="true"></i>
-                    </button>
-                    <div class="navbar-nav d-none d-lg-flex">
-                        {% include "linguatec_lexicon_frontend/components/navbar-menu.html" with grouplimit=1 %}
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <div class="rg-header-bottom"></div>
-
-        <!-- only mobile menu -->
-        <nav class="navbar fixed-top navbar-collapse rg-navbar-content text-center">
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="d-flex flex-row-reverse">
-              <button class="text-left navbar-toggler" type="button" data-toggle="collapse"
-                  data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                  aria-label="Toggle navigation">
-                  <i class="{{ fa_class }} fa-times" aria-hidden="true"></i>
-              </button>
-            </div>
-
-            <ul class="navbar-nav mr-auto">
-              {% include "linguatec_lexicon_frontend/components/navbar-menu.html" %}
-            </ul>
-
-            <div class="rg-logos-container">
-              <div class="rg-logo">
-                  <img class="img-fluid" alt="INTERREG POCTEFA LINGUATEC"
-                      src="{% static 'logo-interreg-poctefa-RGB-LINGUATEC.svg' %}" width="240" height="82" />
-              </div>
-              <div class="rg-logo">
-                  <img class="img-fluid" alt="Turismo de Aragón" src="{% static 'logo-aragon-turismo-wide.svg' %}"
-                      width="240" height="59" />
-              </div>
-              <div class="rg-logo">
-                  <img class="img-fluid" alt="Gobierno de Aragón" src="{% static 'logo-gobierno-aragon.svg' %}"
-                      width="240" height="54" />
-              </div>
-              <div class="rg-logo">
-                <img class="img-fluid" alt="Ministerio de Cultura y Deporte" src="{% static 'logo-MCD.Gob.gif' %}"
-                    width="240" height="78" />
-              </div>
-            </div><!-- /rg-logos-container -->
+  <header class="container-fluid rg-header">
+    <div class="rg-header-container row">
+      <div class="rg-header-content col-12">
+        <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+          <div class="navbar-brand">
+            {% block branding %}{% endblock %}
           </div>
-        </nav><!-- /only mobile menu -->
-      </header>
-      {% block home_header %}{% endblock %}
-
-    <main class="{% block mainclass %}container-fluid{% endblock %} rg-main">
-        {% block content %}
-        <div class="row">
-          <div class="col-12 col-xl-5 order-0 order-xl-12">
-            <div class="d-xl-flex flex-row-reverse">
-            <div id="topicMenuContainer" class="d-inline-flex">
-              <div class="d-inline-flex" style="max-width: 210px;">
-               <div class="topic-item-wrapper">
-                 <div id="topic-general" class="topic-item {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon %}active{% endif %}"
-                   data-lexicode="es-ar" data-lexidesc="castellano-aragonés">
-                   <span class="lexicon-general-icon"></span>
-                   <div class="topic-title">Diccionario general</div>
-                 </div>
-               </div>
-               <div id="topic-toggler-wrapper" class="topic-item-wrapper">
-                 <div id="topic-toggler-base" class="topic-item topic-toggler">
-                   <i class="{{ fa_class }} fa-ellipsis-v fa-2x"></i>
-                   <div class="topic-title">Áreas <br/>temáticas</div>
-                 </div>
-               </div>
-              </div>
-
-               <div class="topic-menu-wrapper {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon %}collapsed{% endif %}">
-                 {% include "linguatec_lexicon_frontend/components/topic-menu-base.html" %}
-               </div>
-
-             </div>
-            </div><!-- end foo -->
-          </div><!-- end topic menu -->
-          <div class="col-12 col-md-11 col-lg-8 col-xl-7 order-1" id="baseSearch">
-              {% include "linguatec_lexicon_frontend/components/search-tools.html" %}
+          {% block menu-lexicon-change %}
+          {% endblock %}
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="{{ fa_class }} fa-bars" aria-hidden="true"></i>
+          </button>
+          <div class="navbar-nav d-none d-lg-flex">
+            {% include "linguatec_lexicon_frontend/components/navbar-menu.html" with grouplimit=1 %}
           </div>
-        </div>
-        {% endblock %}
-    </main>
+        </nav>
+      </div>
+    </div>
+    <div class="rg-header-bottom"></div>
 
-    {% block footer %}
-    <footer class="container-fluid {% block footerclass %}fixed-bottom{% endblock %} rg-footer">
-        <div class="row text-center d-lg-none" id="collapse_button_container">
-            <div class="col-12">
-                <a id="footer_collapse_button" class="collapsed" data-toggle="collapse" href="#collapseLogos"
-                    role="button" aria-expanded="false" aria-controls="collapseLogos">
-                    <i class="{{ fa_class }} fa-angle-up fa-3x" aria-hidden="true"></i>
-                    <i class="{{ fa_class }} fa-angle-down fa-3x" aria-hidden="true"></i>
-                </a>
-            </div>
+    <!-- only mobile menu -->
+    <nav class="navbar fixed-top navbar-collapse rg-navbar-content text-center">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex flex-row-reverse">
+          <button class="text-left navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="{{ fa_class }} fa-times" aria-hidden="true"></i>
+          </button>
         </div>
-        <div class="row d-none d-lg-block">
-            <div class="col-12">
-                <div class="footer-lg-separator"></div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            {% block footernav %}
-            <div class="d-none d-xl-block col-lg-6">
-                <div class="row">
-                    <div class="col-12 footer-lg-external-links">
-                        <a class="ref-external" href="{% url 'lenguas-de-aragon' %}">
-                            <img src="{% static 'logo-lenguas-de-aragon-white.svg' %}"
-                                alt="logotipo Lenguas de Aragón" width="78" height="26" />
-                            <span>Lenguas de Aragón</span>
-                        </a>
-                        <a class="ref-external" href="{% url 'traductor' %}"><span>Traductor Automático</span></a>
-                    </div>
+
+        <ul class="navbar-nav mr-auto">
+          {% include "linguatec_lexicon_frontend/components/navbar-menu.html" %}
+        </ul>
+
+        <div class="rg-logos-container">
+          <div class="rg-logo">
+            <img class="img-fluid" alt="INTERREG POCTEFA LINGUATEC"
+              src="{% static 'logo-interreg-poctefa-RGB-LINGUATEC.svg' %}" width="240" height="82" />
+          </div>
+          <div class="rg-logo">
+            <img class="img-fluid" alt="Turismo de Aragón" src="{% static 'logo-aragon-turismo-wide.svg' %}" width="240"
+              height="59" />
+          </div>
+          <div class="rg-logo">
+            <img class="img-fluid" alt="Gobierno de Aragón" src="{% static 'logo-gobierno-aragon.svg' %}" width="240"
+              height="54" />
+          </div>
+          <div class="rg-logo">
+            <img class="img-fluid" alt="Ministerio de Cultura y Deporte" src="{% static 'logo-MCD.Gob.gif' %}"
+              width="240" height="78" />
+          </div>
+        </div><!-- /rg-logos-container -->
+      </div>
+    </nav><!-- /only mobile menu -->
+  </header>
+  {% block home_header %}{% endblock %}
+
+  <main class="{% block mainclass %}container-fluid{% endblock %} rg-main">
+    {% block content %}
+    <div class="row">
+      <div class="col-12 col-xl-5 order-0 order-xl-12">
+        <div class="d-xl-flex flex-row-reverse">
+          <div id="topicMenuContainer" class="d-inline-flex">
+            {# <!-- max-with = nº visible elements * 90px --> #}
+            <div class="d-inline-flex" style="max-width: 270px;">
+              <div class="topic-item-wrapper">
+                <div id="topic-general"
+                  class="topic-item {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon %}active{% endif %}"
+                  data-lexicode="es-ar" data-lexidesc="castellano-aragonés">
+                  <span class="lexicon-general-icon"></span>
+                  <div class="topic-title">Diccionario general</div>
                 </div>
-                <div class="row">
-                    <div class="col-12 footer-lg-nav">
-                        <ul class="list-inline">
-                            {% for navitem in menu_footer_lg %}
-                            <li class="list-inline-item">
-                                <a href="{% url navitem.url %}">{{ navitem.name }}</a>
-                            </li>
-                            {% if not forloop.last %}
-                            <li class="list-inline-item">/</li>
-                            {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
+              </div>
+              <div class="topic-item-wrapper">
+                <div id="topic-definition" class="topic-item {% if 'an-an' == selected_lexicon %}active{% endif %}"
+                  data-lexicode="an-an" data-lexidesc="Definizión en aragonés"
+                  data-logo-caption="Diccionario<br>de aragonés">
+                  <i class="fal fa-book fa-2x"></i>
+                  <div class="topic-title">Definizión aragonés</div>
                 </div>
-            </div>
-            {% endblock %}
-            <div class="col-12 col-lg-6">
-                <div class="row align-items-center text-center collapse d-lg-flex" id="collapseLogos">
-                    <div class="col-12 col-md-3 rg-logo">
-                        <img class="img-fluid" alt="INTERREG POCTEFA LINGUATEC"
-                            src="{% static 'logo-interreg-poctefa-RGB-LINGUATEC.svg' %}" width="240" height="82" />
-                    </div>
-                    <div class="col-12 col-md-3 rg-logo">
-                        <img class="img-fluid" alt="Turismo de Aragón" src="{% static 'logo-aragon-turismo-wide.svg' %}"
-                            width="240" height="59" />
-                    </div>
-                    <div class="col-12 col-md-3 rg-logo">
-                        <img class="img-fluid" alt="Gobierno de Aragón" src="{% static 'logo-gobierno-aragon.svg' %}"
-                            width="240" height="54" />
-                    </div>
-                    <div class="col-12 col-md-3 rg-logo">
-                        <img class="img-fluid" alt="Ministerio de Cultura y Deporte" src="{% static 'logo-MCD.Gob.gif' %}"
-                            width="240" height="78" />
-                    </div>
-                    <div id="rg-fondos-feder" class="col-12">Este proyecto está cofinanciado por fondos FEDER</div>
+              </div>
+              <div id="topic-toggler-wrapper" class="topic-item-wrapper">
+                <div id="topic-toggler-base" class="topic-item topic-toggler">
+                  <i class="{{ fa_class }} fa-ellipsis-v fa-2x"></i>
+                  <div class="topic-title">Áreas <br />temáticas</div>
                 </div>
+              </div>
             </div>
-        </div>
-    </footer>
+
+            <div
+              class="topic-menu-wrapper {% if 'es-ar' == selected_lexicon or 'ar-es' == selected_lexicon or 'an-an' == selected_lexicon %}collapsed{% endif %}">
+              {% include "linguatec_lexicon_frontend/components/topic-menu-base.html" %}
+            </div>
+
+          </div>
+        </div><!-- end foo -->
+      </div><!-- end topic menu -->
+      <div class="col-12 col-md-11 col-lg-8 col-xl-7 order-1" id="baseSearch">
+        {% include "linguatec_lexicon_frontend/components/search-tools.html" %}
+      </div>
+    </div>
     {% endblock %}
+  </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-        crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    <script src="//cdn1.readspeaker.com/script/11263/webReader/webReader.js?pids=wr" type="text/javascript" id="rs_req_Init"></script>
-    <script>
-        window.rsConf = {
-            general: {
-                usePost: true
-            },
-            settings: {
-                hl: 'word',
-                hlword: '#f0f0f0',
-                hlicon: "iconoff",
-            },
-        };
+  {% block footer %}
+  <footer class="container-fluid {% block footerclass %}fixed-bottom{% endblock %} rg-footer">
+    <div class="row text-center d-lg-none" id="collapse_button_container">
+      <div class="col-12">
+        <a id="footer_collapse_button" class="collapsed" data-toggle="collapse" href="#collapseLogos" role="button"
+          aria-expanded="false" aria-controls="collapseLogos">
+          <i class="{{ fa_class }} fa-angle-up fa-3x" aria-hidden="true"></i>
+          <i class="{{ fa_class }} fa-angle-down fa-3x" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+    <div class="row d-none d-lg-block">
+      <div class="col-12">
+        <div class="footer-lg-separator"></div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      {% block footernav %}
+      <div class="d-none d-xl-block col-lg-6">
+        <div class="row">
+          <div class="col-12 footer-lg-external-links">
+            <a class="ref-external" href="{% url 'lenguas-de-aragon' %}">
+              <img src="{% static 'logo-lenguas-de-aragon-white.svg' %}" alt="logotipo Lenguas de Aragón" width="78"
+                height="26" />
+              <span>Lenguas de Aragón</span>
+            </a>
+            <a class="ref-external" href="{% url 'traductor' %}"><span>Traductor Automático</span></a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 footer-lg-nav">
+            <ul class="list-inline">
+              {% for navitem in menu_footer_lg %}
+              <li class="list-inline-item">
+                <a href="{% url navitem.url %}">{{ navitem.name }}</a>
+              </li>
+              {% if not forloop.last %}
+              <li class="list-inline-item">/</li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+      <div class="col-12 col-lg-6">
+        <div class="row align-items-center text-center collapse d-lg-flex" id="collapseLogos">
+          <div class="col-12 col-md-3 rg-logo">
+            <img class="img-fluid" alt="INTERREG POCTEFA LINGUATEC"
+              src="{% static 'logo-interreg-poctefa-RGB-LINGUATEC.svg' %}" width="240" height="82" />
+          </div>
+          <div class="col-12 col-md-3 rg-logo">
+            <img class="img-fluid" alt="Turismo de Aragón" src="{% static 'logo-aragon-turismo-wide.svg' %}" width="240"
+              height="59" />
+          </div>
+          <div class="col-12 col-md-3 rg-logo">
+            <img class="img-fluid" alt="Gobierno de Aragón" src="{% static 'logo-gobierno-aragon.svg' %}" width="240"
+              height="54" />
+          </div>
+          <div class="col-12 col-md-3 rg-logo">
+            <img class="img-fluid" alt="Ministerio de Cultura y Deporte" src="{% static 'logo-MCD.Gob.gif' %}"
+              width="240" height="78" />
+          </div>
+          <div id="rg-fondos-feder" class="col-12">Este proyecto está cofinanciado por fondos FEDER</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  {% endblock %}
 
-        // define variable globally to be accessible on JS scripts
-        var autocomplete_api_url = "{{ autocomplete_api_url }}";
-    </script>
-    <script src="{% static 'js/base.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+    integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+    integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+  <script src="//cdn1.readspeaker.com/script/11263/webReader/webReader.js?pids=wr" type="text/javascript"
+    id="rs_req_Init"></script>
+  <script>
+    window.rsConf = {
+      general: {
+        usePost: true
+      },
+      settings: {
+        hl: 'word',
+        hlword: '#f0f0f0',
+        hlicon: "iconoff",
+      },
+    };
 
-    {% block extrascript %}{% endblock %}
+    // define variable globally to be accessible on JS scripts
+    var autocomplete_api_url = "{{ autocomplete_api_url }}";
+  </script>
+  <script src="{% static 'js/base.js' %}"></script>
+
+  {% block extrascript %}{% endblock %}
 </body>
 
 </html>
