@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## main
 
+## [0.7] - 2025-03-17
+
 - [added] Permalinks: access specific word definition using a permanent link.
 - [added] Monolingual definition.
 
