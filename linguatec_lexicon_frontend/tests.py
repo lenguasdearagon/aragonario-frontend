@@ -159,3 +159,11 @@ class HightlightInlineGramCats(unittest.TestCase):
 
         output = linguatec.highlight_gramcats_inline(input)
         self.assertEqual(expected, output)
+
+    def test_five(self, retrieve_gramcats):
+        # an-an: plorar
+        input = "Redamar glarimas. Manar d'os uellos un liquido."
+        expected = "Redamar glarimas. Manar d'os uellos un liquido."
+
+        output = linguatec.highlight_gramcats_inline(input)
+        self.assertEqual(expected, output)
