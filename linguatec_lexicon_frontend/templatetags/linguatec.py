@@ -1,6 +1,7 @@
 """
 Templatetags helpers to render lexicon content.
 """
+import logging
 import re
 
 import requests
@@ -12,11 +13,12 @@ from django.utils.safestring import mark_safe
 
 from linguatec_lexicon_frontend import utils, validators
 
+logger = logging.getLogger(__name__)
+
 register = template.Library()
 
 
-@register.filter
-@mark_safe
+@register.filter(is_safe=True)
 def render_entry(entry):
     """Parse entry content to apply weight to content."""
     # Use modern .get() and fallback
@@ -25,7 +27,7 @@ def render_entry(entry):
     try:
         validators.validate_balanced_parenthesis(value)
     except ValidationError:
-        return f"<span id='word_{entry['id']}'>{value}</span>"
+        return mark_safe(f"<span id='word_{entry['id']}'>{value}</span>")
 
     # [readspeaker] mark content in parenthesis & skip it to be read
     value = readspeaker_skip_variant_suffix(value)
@@ -38,7 +40,7 @@ def render_entry(entry):
     # mark keywords (inline gramcat)
     value = highlight_gramcats_inline(value)
 
-    return f"<span id='word_{entry['id']}'>{value}</span>"
+    return mark_safe(f"<span id='word_{entry['id']}'>{value}</span>")
 
 
 def highlight_gramcats_inline(value):
@@ -75,14 +77,13 @@ def build_link(matchobj):
     return f'<a class="rg-linked-word" href="/words/{word_id}/">{word_text}</a>'
 
 
-@register.filter
-@mark_safe
+@register.filter(is_safe=True)
 def render_term(word, lexicon_code):
     term = word.get('term', '')
     if lexicon_code == "ar-es":
         term = readspeaker_skip_variant_suffix(term)
 
-    return f'<span id="word_{word["id"]}">{term}</span>'
+    return mark_safe(f'<span id="word_{word["id"]}">{term}</span>')
 
 
 def readspeaker_skip_variant_suffix(term):
@@ -98,9 +99,13 @@ def verbose_gramcat(value):
     url = f"{base_url}/gramcats/show/"
 
     try:
-        response = requests.get(url, params={'abbr': value})
+        response = requests.get(url, params={'abbr': value}, timeout=10)
         response.raise_for_status()
         gramcat = response.json()
         return f"{gramcat['title']} ({gramcat['abbreviation']})"
-    except (requests.RequestException, KeyError):
+    except requests.RequestException:
+        logger.exception(f"Failed to retrieve gramcat for {value}")
+        return value
+    except (ValueError, TypeError, KeyError):
+        logger.exception(f"Failed to decode gramcat response for {value}")
         return value

@@ -1,8 +1,12 @@
 """
 Utils to retrieve information of the lexicon backend API.
 """
+import logging
+
 import requests
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 def is_regular_verb(word):
@@ -42,16 +46,21 @@ def retrieve_gramcats():
 
     gramcats = []
 
-    while url:
-        response = requests.get(url, params=params)
-        response.raise_for_status()
-        data = response.json()
+    try:
+        while url:
+            response = requests.get(url, params=params, timeout=10)
+            response.raise_for_status()
+            data = response.json()
 
-        gramcats.extend(data["results"])
+            gramcats.extend(data["results"])
 
-        # 'next' will be a full URL provided by the DRF paginator
-        url = data.get("next")
-        params = None  # Parameters are already inside the 'next' URL
+            # 'next' will be a full URL provided by the DRF paginator
+            url = data.get("next")
+            params = None  # Parameters are already inside the 'next' URL
+    except requests.RequestException:
+        logger.exception(f"Failed to retrieve gramcats from {base_url}/gramcats/")
+    except (ValueError, TypeError):
+        logger.exception("Failed to decode JSON response from gramcats API")
 
     return gramcats
 
@@ -62,7 +71,13 @@ def retrieve_near_words(query, lex):
     url = f"{base_url}/words/near/"
     params = {'q': query, 'l': lex}
 
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-
-    return response.json().get("results", [])
+    try:
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        return response.json().get("results", [])
+    except requests.RequestException:
+        logger.exception(f"Failed to retrieve near words from {url}")
+        return []
+    except (ValueError, TypeError):
+        logger.exception("Failed to decode JSON response from near words API")
+        return []

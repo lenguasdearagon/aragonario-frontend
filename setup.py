@@ -2,7 +2,6 @@ import os
 
 from setuptools import find_packages, setup
 
-
 # TODO EXCLUDE_FROM_PACKAGES when adding project template
 # see https://github.com/django/django/blob/master/setup.py#L55
 
@@ -22,7 +21,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name="linguatec-lexicon-frontend",
     version=version,
-    url = 'https://gitlab.com/linguatec/linguatec-lexicon-frontend/',
+    url = 'https://github.com/lenguasdearagon/aragonario-frontend/',
     author = 'Santiago Lamora',
     author_email='santiago@ribaguifi.com',
     description = ('A frontend implementation for the linguatec-lexicon API.'),
@@ -32,18 +31,15 @@ setup(
     include_package_data = True,
     zip_safe=False,
     classifiers = [
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 2.1',
         'Intended Audience :: Education',
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.13',
         'Programming Language :: Python :: 3 :: Only',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',

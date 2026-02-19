@@ -1,3 +1,5 @@
+import logging
+import urllib.parse
 from collections import OrderedDict
 
 import requests
@@ -10,16 +12,23 @@ from django.views.generic.base import RedirectView, TemplateView
 from linguatec_lexicon_frontend import utils
 from linguatec_lexicon_frontend.forms import ConjugatorForm
 
+logger = logging.getLogger(__name__)
+
 
 # Helper to avoid repetitive boilerplate
-def call_api(path, params=None):
+def call_api(path, params=None, timeout=10):
     base_url = settings.LINGUATEC_LEXICON_API_URL.rstrip('/')
     url = f"{base_url}/{path.lstrip('/')}"
     try:
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=timeout)
         response.raise_for_status()
         return response.json()
     except requests.RequestException:
+        logger.exception(f"API request failed for {url}")
+        return None
+    except (ValueError, TypeError):
+        # Catch json.JSONDecodeError (ValueError in Python < 3.5) and type errors
+        logger.exception(f"Failed to decode JSON response from {url}")
         return None
 
 
@@ -188,7 +197,8 @@ class WordDetailView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         word = self.get_word()
-        return reverse('word-detail-uri', args=(word['lexicon'], word['term']))
+        term = urllib.parse.quote(word['term'], safe='')
+        return reverse('word-detail-uri', args=(word['lexicon'], term))
 
     def get_word(self):
         pk = self.kwargs['pk']
@@ -203,7 +213,8 @@ class WordDetailBySlug(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         word = self.get_word()
-        return reverse('word-detail-uri', args=(word['lexicon'], word['term']))
+        term = urllib.parse.quote(word['term'], safe='')
+        return reverse('word-detail-uri', args=(word['lexicon'], term))
 
     def get_word(self):
         slug = self.kwargs['slug']
