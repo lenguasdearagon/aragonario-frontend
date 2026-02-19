@@ -20,7 +20,7 @@ class RenderEntryTestCase(unittest.TestCase):
         html = linguatec.render_entry(entry)
         self.assertIn("<span class='rg-usecase-comment rs_skip'>(lorem ipsum)</span>", html)
         self.assertIn(
-            "<span id='word_1'><a class='rg-linked-word' href='/words/2/'>boira</a>", html)
+            '<span id=\'word_1\'><a class="rg-linked-word" href="/words/2/">boira</a>', html)
 
     @mock.patch('linguatec_lexicon_frontend.utils.retrieve_gramcats')
     def test_render_begin(self, retrieve_gramcats):
@@ -32,8 +32,8 @@ class RenderEntryTestCase(unittest.TestCase):
         html = linguatec.render_entry(entry)
         self.assertIn("<span class='rg-usecase-comment rs_skip'>(foo)</span>", html)
         self.assertIn(
-            "<a class='rg-linked-word' href='/words/2/'>boira</a> "
-            "<a class='rg-linked-word' href='/words/3/'>grasa</a>",
+            '<a class="rg-linked-word" href="/words/2/">boira</a> '
+            '<a class="rg-linked-word" href="/words/3/">grasa</a>',
             html
         )
 
@@ -145,9 +145,15 @@ class HightlightInlineGramCats(unittest.TestCase):
         self.assertEqual(expected, output)
 
     def test_three(self, retrieve_gramcats):
-        # es-ar: destacar |	v. tr. // v. intr. | (resaltar, poner de relieve) acobaltar // v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a // v. tr. (adelantar una porción de tropa, separándola del cuerpo principal) abanzar (del lat. vulgar abantiare)
+        """
+        es-ar: destacar |	v. tr. // v. intr. | (resaltar, poner de relieve) acobaltar
+        // v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a
+        // v. tr. (adelantar una porción de tropa, separándola del cuerpo principal)
+        abanzar (del lat. vulgar abantiare)
+        """
         input = "v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a"
-        expected = "<span class='rg-gramcat' title='verbo intransitivo'>v. intr.</span> (sobresalir, decollar) sobrexir, estar siñalero/a"
+        expected = ("<span class='rg-gramcat' title='verbo intransitivo'>v. intr.</span> "
+                    "(sobresalir, decollar) sobrexir, estar siñalero/a")
 
         output = linguatec.highlight_gramcats_inline(input)
         self.assertEqual(expected, output)
@@ -155,7 +161,8 @@ class HightlightInlineGramCats(unittest.TestCase):
     def test_four(self, retrieve_gramcats):
         # es-ar: bandurria común
         input = "iba cuelliblanca (s. f.), ibis cuelliblanco (s. m.)"
-        expected = "iba cuelliblanca (<span class='rg-gramcat' title='sustantivo femenino'>s. f.</span>), ibis cuelliblanco (<span class='rg-gramcat' title='sustantivo masculino'>s. m.</span>)"
+        expected = ("iba cuelliblanca (<span class='rg-gramcat' title='sustantivo femenino'>s. f.</span>), "
+                    "ibis cuelliblanco (<span class='rg-gramcat' title='sustantivo masculino'>s. m.</span>)")
 
         output = linguatec.highlight_gramcats_inline(input)
         self.assertEqual(expected, output)
