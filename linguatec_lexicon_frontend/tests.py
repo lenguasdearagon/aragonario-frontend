@@ -145,9 +145,15 @@ class HightlightInlineGramCats(unittest.TestCase):
         self.assertEqual(expected, output)
 
     def test_three(self, retrieve_gramcats):
-        # es-ar: destacar |	v. tr. // v. intr. | (resaltar, poner de relieve) acobaltar // v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a // v. tr. (adelantar una porción de tropa, separándola del cuerpo principal) abanzar (del lat. vulgar abantiare)
+        """
+        es-ar: destacar |	v. tr. // v. intr. | (resaltar, poner de relieve) acobaltar
+        // v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a
+        // v. tr. (adelantar una porción de tropa, separándola del cuerpo principal)
+        abanzar (del lat. vulgar abantiare)
+        """
         input = "v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a"
-        expected = "<span class='rg-gramcat' title='verbo intransitivo'>v. intr.</span> (sobresalir, decollar) sobrexir, estar siñalero/a"
+        expected = ("<span class='rg-gramcat' title='verbo intransitivo'>v. intr.</span>"
+                    "(sobresalir, decollar) sobrexir, estar siñalero/a")
 
         output = linguatec.highlight_gramcats_inline(input)
         self.assertEqual(expected, output)
@@ -155,7 +161,8 @@ class HightlightInlineGramCats(unittest.TestCase):
     def test_four(self, retrieve_gramcats):
         # es-ar: bandurria común
         input = "iba cuelliblanca (s. f.), ibis cuelliblanco (s. m.)"
-        expected = "iba cuelliblanca (<span class='rg-gramcat' title='sustantivo femenino'>s. f.</span>), ibis cuelliblanco (<span class='rg-gramcat' title='sustantivo masculino'>s. m.</span>)"
+        expected = ("iba cuelliblanca (<span class='rg-gramcat' title='sustantivo femenino'>s. f.</span>), "
+                    "ibis cuelliblanco (<span class='rg-gramcat' title='sustantivo masculino'>s. m.</span>)")
 
         output = linguatec.highlight_gramcats_inline(input)
         self.assertEqual(expected, output)

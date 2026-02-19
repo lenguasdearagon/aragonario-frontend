@@ -14,6 +14,7 @@ from linguatec_lexicon_frontend import utils, validators
 
 register = template.Library()
 
+
 @register.filter
 @mark_safe
 def render_entry(entry):
@@ -102,4 +103,4 @@ def verbose_gramcat(value):
         gramcat = response.json()
         return f"{gramcat['title']} ({gramcat['abbreviation']})"
     except (requests.RequestException, KeyError):
-        return value        return value
+        return value

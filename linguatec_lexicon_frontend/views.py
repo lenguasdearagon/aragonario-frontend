@@ -22,6 +22,7 @@ def call_api(path, params=None):
     except requests.RequestException:
         return None
 
+
 def get_lexicons():
     data = call_api('lexicons/')
     if not data:
@@ -59,9 +60,21 @@ class LinguatecBaseView(TemplateView):
         context['fa_class'] = 'fal' if getattr(settings, 'LINGUATEC_FONTAWESOME_PRO', False) else 'fas'
 
         context['topic_list'] = [
-            {"id": 17, "code": "es-ar", "name": "Botánico", "src_language": "es", "dst_language": "ar", "topic": "flora", "slug": "es-ar@flora", "icon": "fa-flower"},
-            {"id": 18, "code": "es-ar", "name": "Faunístico", "src_language": "es", "dst_language": "ar", "topic": "fauna", "slug": "es-ar@fauna", "icon": "fa-paw"},
-            {"id": 19, "code": "es-ar", "name": "Jurídico", "src_language": "es", "dst_language": "ar", "topic": "law", "slug": "es-ar@law", "icon": "fa-balance-scale"},
+            {
+                "id": 17, "code": "es-ar", "name": "Botánico",
+                "src_language": "es", "dst_language": "ar", "topic": "flora",
+                "slug": "es-ar@flora", "icon": "fa-flower"
+            },
+            {
+                "id": 18, "code": "es-ar", "name": "Faunístico",
+                "src_language": "es", "dst_language": "ar", "topic": "fauna",
+                "slug": "es-ar@fauna", "icon": "fa-paw"
+            },
+            {
+                "id": 19, "code": "es-ar", "name": "Jurídico",
+                "src_language": "es", "dst_language": "ar", "topic": "law",
+                "slug": "es-ar@law", "icon": "fa-balance-scale"
+            },
         ]
         return context
 
@@ -242,4 +255,4 @@ class ConjugationDetailView(LinguatecBaseView):
             "selected_lexicon": 'es-ar',
             "conjugator_form": ConjugatorForm()
         })
-        return context        return context
+        return context

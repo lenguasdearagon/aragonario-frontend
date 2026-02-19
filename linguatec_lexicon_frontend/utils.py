@@ -1,10 +1,6 @@
 """
 Utils to retrieve information of the lexicon backend API.
 """
-"""
-Utils to retrieve information of the lexicon backend API.
-Refactored for Python 3.13 and Debian 13 (Trixie).
-"""
 import requests
 from django.conf import settings
 
@@ -55,7 +51,7 @@ def retrieve_gramcats():
 
         # 'next' will be a full URL provided by the DRF paginator
         url = data.get("next")
-        params = None # Parameters are already inside the 'next' URL
+        params = None  # Parameters are already inside the 'next' URL
 
     return gramcats
 
