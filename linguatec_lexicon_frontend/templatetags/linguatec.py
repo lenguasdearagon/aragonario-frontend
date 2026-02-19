@@ -2,9 +2,8 @@
 Templatetags helpers to render lexicon content.
 """
 import re
-import urllib.parse
 
-import coreapi
+import requests
 from django import template
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -15,104 +14,92 @@ from linguatec_lexicon_frontend import utils, validators
 
 register = template.Library()
 
-
 @register.filter
 @mark_safe
 def render_entry(entry):
     """Parse entry content to apply weight to content."""
-    value = entry.get('marked_translation') or entry['translation']
+    # Use modern .get() and fallback
+    value = entry.get('marked_translation') or entry.get('translation', '')
 
     try:
         validators.validate_balanced_parenthesis(value)
     except ValidationError:
-        # [readspeaker] wrap & identify entry to be read
-        return "<span id='word_{}'>{}</span>".format(entry['id'], value)
+        return f"<span id='word_{entry['id']}'>{value}</span>"
 
     # [readspeaker] mark content in parenthesis & skip it to be read
-    value = mark_safe(readspeaker_skip_variant_suffix(value))
+    value = readspeaker_skip_variant_suffix(value)
     value = value.replace("(", "<span class='rg-usecase-comment rs_skip'>(")
     value = value.replace(")", ")</span>")
 
-    # Replace <trans> mark with links to wrapped words
+    # Replace <trans> mark with links using f-strings for Python 3.13 speed
     value = re.sub(r'<trans word=([0-9]+)>(.*?)</trans>', build_link, value)
 
     # mark keywords (inline gramcat)
     value = highlight_gramcats_inline(value)
 
-    # [readspeaker] wrap & identify entry to be read
-    return "<span id='word_{}'>{}</span>".format(entry['id'], value)
+    return f"<span id='word_{entry['id']}'>{value}</span>"
 
 
 def highlight_gramcats_inline(value):
-    """
-    Highlight inline gramcats abbreviations & add related title
-    """
+    """Highlight inline gramcats abbreviations & add related title."""
+    # This calls utils.retrieve_gramcats() which now uses 'requests'
     gramcats = utils.retrieve_gramcats()
-    gramcats.sort(key=sort_by_abbr_len, reverse=True)
+
+    # Sort by length descending to match longest abbreviations first
+    # (e.g., 's. m.' before 's.')
+    gramcats.sort(key=lambda x: len(x['abbreviation']), reverse=True)
+
     abbr_replaced = []
     for gramcat in gramcats:
         abbr, title = gramcat['abbreviation'], gramcat['title']
 
-        # avoid double highlight for abbreviations that are a subset of another
-        # e.g. 's.' is a subset of 's. m.'
-        abbr_subset = False
-        for replaced in abbr_replaced:
-            if replaced.startswith(abbr):
-                abbr_subset = True
-                break
-
-        if abbr_subset:
+        # avoid double highlight for subsets
+        if any(replaced.startswith(abbr) for replaced in abbr_replaced):
             continue
 
-        # Check if abbreviation appears on definition with/witout parenthesis
-        # e.g. 's.' or '(s.)'
+        # Check if abbreviation appears with/without parenthesis
         expressions = [rf"\b{re.escape(abbr)}", rf"\({re.escape(abbr)}\)"]
         if any(re.search(expr, value) for expr in expressions):
             abbr_replaced.append(abbr)
-            value = value.replace(
-                abbr, "<span class='rg-gramcat' title='{0}'>{1}</span>".format(title, abbr))
+            # Use f-string for better performance in 3.13
+            span = f"<span class='rg-gramcat' title='{title}'>{abbr}</span>"
+            value = value.replace(abbr, span)
 
     return value
 
 
-def sort_by_abbr_len(gramcat):
-    return len(gramcat['abbreviation'])
-
-
 def build_link(matchobj):
-    return "<a class='{class}' href='/words/{id}/'>{word}</a>".format_map({
-        'class': "rg-linked-word",
-        'id': matchobj.group(1),
-        'word': matchobj.group(2),
-    })
+    word_id = matchobj.group(1)
+    word_text = matchobj.group(2)
+    return f'<a class="rg-linked-word" href="/words/{word_id}/">{word_text}</a>'
 
 
 @register.filter
 @mark_safe
 def render_term(word, lexicon_code):
-    term = word['term']
+    term = word.get('term', '')
     if lexicon_code == "ar-es":
         term = readspeaker_skip_variant_suffix(term)
 
-    return '<span id="word_{}">{}</span>'.format(word['id'], term)
+    return f'<span id="word_{word["id"]}">{term}</span>'
 
 
 def readspeaker_skip_variant_suffix(term):
-    # Match '/' excluding HTML closing tag: e.g. </span)
-    return re.sub(r'(?<!<)([/]\w+)', '<span class="rs_skip">\g<0></span>', term)
+    # Match '/' excluding HTML closing tag: e.g. </span>
+    return re.sub(r'(?<!<)([/]\w+)', r'<span class="rs_skip">\1</span>', term)
 
 
-# TODO unused???
 @register.filter
 @stringfilter
 def verbose_gramcat(value):
-    """Attach description to gramatical category abbreviature."""
-    api_url = settings.LINGUATEC_LEXICON_API_URL
-    client = coreapi.Client()
-    schema = client.get(api_url)
-    querystring_args = {'abbr': value}
-    url = urllib.parse.urljoin(
-        schema['gramcats'], 'show/?' + urllib.parse.urlencode(querystring_args))
-    gramcat = client.get(url)
+    """Attach description to grammatical category abbreviation via Requests."""
+    base_url = settings.LINGUATEC_LEXICON_API_URL.rstrip('/')
+    url = f"{base_url}/gramcats/show/"
 
-    return "{} ({})".format(gramcat['title'], gramcat['abbreviation'])
+    try:
+        response = requests.get(url, params={'abbr': value})
+        response.raise_for_status()
+        gramcat = response.json()
+        return f"{gramcat['title']} ({gramcat['abbreviation']})"
+    except (requests.RequestException, KeyError):
+        return value        return value

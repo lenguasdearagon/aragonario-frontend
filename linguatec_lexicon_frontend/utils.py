@@ -1,83 +1,72 @@
 """
 Utils to retrieve information of the lexicon backend API.
 """
-import coreapi
-import urllib.parse
-
+"""
+Utils to retrieve information of the lexicon backend API.
+Refactored for Python 3.13 and Debian 13 (Trixie).
+"""
+import requests
 from django.conf import settings
-
-
-def removesuffix(string, suffix):
-    # suffix='' should not call self[:-0].
-    if suffix and string.endswith(suffix):
-        return string[:-len(suffix)]
-    else:
-        return string[:]
 
 
 def is_regular_verb(word):
     ARAGONESE_VERB_SUFFIXES = ['ar', 'er', 'ir']
     GRAMCATS_REGULAR_VERBS = [
-        "v.",
-        "v. cop.",
-        "v. intr.",
-        "v. prnl.",
-        "v. reciproc.",
-        "v. tr.",
+        "v.", "v. cop.", "v. intr.", "v. prnl.",
+        "v. reciproc.", "v. tr.",
     ]
     PRONOMINOADVERBIALS = ['-bi', '-ie', '-ne']
 
-    gramcat_is_regular_verb = False
-    for gramcat in word["gramcats"]:
-        if gramcat in GRAMCATS_REGULAR_VERBS:
-            gramcat_is_regular_verb = True
-            break
-
-    if not gramcat_is_regular_verb:
+    # 1. Check Grammatical Category
+    if not any(cat in GRAMCATS_REGULAR_VERBS for cat in word.get("gramcats", [])):
         return False
 
-    # Detect if this term could be conjugated using softaragones conchugator
+    # 2. Detect conjugation potential
     word_root = word["term"]
-    for suffix in PRONOMINOADVERBIALS:
-        word_root = removesuffix(word_root, suffix)
+    for pronominal in PRONOMINOADVERBIALS:
+        # Using Python 3.9+ built-in removesuffix
+        word_root = word_root.removesuffix(pronominal)
 
-    suffix = word_root[-2:]
-    if suffix not in ARAGONESE_VERB_SUFFIXES:
-        suffix = word_root[-3:]
-        if suffix != '-se':
-            return False
+    # Check for -ar, -er, -ir or -se
+    if any(word_root.endswith(s) for s in ARAGONESE_VERB_SUFFIXES):
+        return True
 
-    return True
+    if word_root.endswith('-se'):
+        return True
+
+    return False
 
 
 def retrieve_gramcats():
-    """Retrieve all the gramatical categories through the API."""
-    api_url = settings.LINGUATEC_LEXICON_API_URL
-    client = coreapi.Client()
-    schema = client.get(api_url)
-    querystring_args = {'limit': 100}
+    """Retrieve all categories using standard REST calls."""
+    # Ensure URL ends with a slash to avoid redirects
+    base_url = settings.LINGUATEC_LEXICON_API_URL.rstrip('/')
+    url = f"{base_url}/gramcats/"
+    params = {'limit': 100}
 
-    response = client.get(schema['gramcats'] + '?' + urllib.parse.urlencode(querystring_args))
-    gramcats = response["results"]
+    gramcats = []
 
-    # iterate over all pages to retrieve all the gramcats
-    next_page = response["next"]
-    while next_page:
-        response = client.get(next_page)
-        gramcats += response["results"]
-        next_page = response["next"]
+    while url:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        gramcats.extend(data["results"])
+
+        # 'next' will be a full URL provided by the DRF paginator
+        url = data.get("next")
+        params = None # Parameters are already inside the 'next' URL
 
     return gramcats
 
 
 def retrieve_near_words(query, lex):
-    """Retrieve near words of a query string through the API."""
-    api_url = settings.LINGUATEC_LEXICON_API_URL
-    client = coreapi.Client()
-    schema = client.get(api_url)
-    querystring_args = {'q': query, 'l': lex}
-    url = schema['words'] + 'near/?' + urllib.parse.urlencode(querystring_args)
-    response = client.get(url)
-    results = response["results"]
+    """Retrieve near words using standard REST calls."""
+    base_url = settings.LINGUATEC_LEXICON_API_URL.rstrip('/')
+    url = f"{base_url}/words/near/"
+    params = {'q': query, 'l': lex}
 
-    return results
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+
+    return response.json().get("results", [])
