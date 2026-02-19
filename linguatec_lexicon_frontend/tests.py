@@ -20,7 +20,7 @@ class RenderEntryTestCase(unittest.TestCase):
         html = linguatec.render_entry(entry)
         self.assertIn("<span class='rg-usecase-comment rs_skip'>(lorem ipsum)</span>", html)
         self.assertIn(
-            "<span id='word_1'><a class='rg-linked-word' href='/words/2/'>boira</a>", html)
+            '<span id=\'word_1\'><a class="rg-linked-word" href="/words/2/">boira</a>', html)
 
     @mock.patch('linguatec_lexicon_frontend.utils.retrieve_gramcats')
     def test_render_begin(self, retrieve_gramcats):
@@ -32,8 +32,8 @@ class RenderEntryTestCase(unittest.TestCase):
         html = linguatec.render_entry(entry)
         self.assertIn("<span class='rg-usecase-comment rs_skip'>(foo)</span>", html)
         self.assertIn(
-            "<a class='rg-linked-word' href='/words/2/'>boira</a> "
-            "<a class='rg-linked-word' href='/words/3/'>grasa</a>",
+            '<a class="rg-linked-word" href="/words/2/">boira</a> '
+            '<a class="rg-linked-word" href="/words/3/">grasa</a>',
             html
         )
 
@@ -152,7 +152,7 @@ class HightlightInlineGramCats(unittest.TestCase):
         abanzar (del lat. vulgar abantiare)
         """
         input = "v. intr. (sobresalir, decollar) sobrexir, estar siñalero/a"
-        expected = ("<span class='rg-gramcat' title='verbo intransitivo'>v. intr.</span>"
+        expected = ("<span class='rg-gramcat' title='verbo intransitivo'>v. intr.</span> "
                     "(sobresalir, decollar) sobrexir, estar siñalero/a")
 
         output = linguatec.highlight_gramcats_inline(input)
