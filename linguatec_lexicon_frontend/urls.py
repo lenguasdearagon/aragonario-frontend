@@ -17,7 +17,7 @@ urlpatterns = [
     path('words/<int:pk>/', views.WordDetailView.as_view(), name='word-detail'),
     path('words/slug/<str:slug>/', views.WordDetailBySlug.as_view(), name='word-detail-by-slug'),
     path('words/<str:verb>/conjugation/', views.ConjugationDetailView.as_view(), name='word-conjugation'),
-    path('words/<str:lexicon>/<str:word>/', views.WordByURIDetailView.as_view(), name='word-detail-uri'),
+    path('words/<str:lexicon>/<path:word>/', views.WordByURIDetailView.as_view(), name='word-detail-uri'),
 
     # redirect of external links
     path('external/lenguas-de-aragon/',
