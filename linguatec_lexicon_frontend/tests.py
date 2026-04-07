@@ -6,6 +6,7 @@ import unittest
 from unittest import mock
 
 from django.http import Http404
+from django.urls import resolve
 
 from linguatec_lexicon_frontend.templatetags import linguatec
 from linguatec_lexicon_frontend.utils import is_regular_verb
@@ -170,6 +171,15 @@ class WordByURIDetailDecodeTestCase(unittest.TestCase):
             view.get_word()
 
 
+class WordDetailURLPatternTestCase(unittest.TestCase):
+    def test_word_detail_uri_accepts_slash_in_word(self):
+        match = resolve('/words/ar-es/bueno/a/', urlconf='linguatec_lexicon_frontend.urls')
+
+        self.assertEqual('word-detail-uri', match.url_name)
+        self.assertEqual('ar-es', match.kwargs['lexicon'])
+        self.assertEqual('bueno/a', match.kwargs['word'])
+
+
 @mock.patch(
     'linguatec_lexicon_frontend.utils.retrieve_gramcats',
     return_value=[
@@ -226,6 +236,4 @@ class HightlightInlineGramCats(unittest.TestCase):
         expected = "Redamar glarimas. Manar d'os uellos un liquido."
 
         output = linguatec.highlight_gramcats_inline(input)
-        self.assertEqual(expected, output)
-        self.assertEqual(expected, output)
         self.assertEqual(expected, output)
