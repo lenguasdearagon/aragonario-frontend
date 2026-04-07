@@ -197,8 +197,7 @@ class WordDetailView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         word = self.get_word()
-        term = urllib.parse.quote(word['term'], safe='')
-        return reverse('word-detail-uri', args=(word['lexicon'], term))
+        return reverse('word-detail-uri', args=(word['lexicon'], word['term']))
 
     def get_word(self):
         pk = self.kwargs['pk']
@@ -213,8 +212,7 @@ class WordDetailBySlug(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         word = self.get_word()
-        term = urllib.parse.quote(word['term'], safe='')
-        return reverse('word-detail-uri', args=(word['lexicon'], term))
+        return reverse('word-detail-uri', args=(word['lexicon'], word['term']))
 
     def get_word(self):
         slug = self.kwargs['slug']
@@ -242,7 +240,8 @@ class WordByURIDetailView(LinguatecBaseView):
 
     def get_word(self):
         lexicon = self.clean_lexicon(self.kwargs['lexicon'])
-        word_term = self.kwargs['word']
+        # Decode once to support legacy double-encoded redirects.
+        word_term = urllib.parse.unquote(self.kwargs['word'])
         word_data = call_api('words/exact/', params={'l': lexicon, 'q': word_term})
         if not word_data:
             raise Http404("Word doesn't exist.")

@@ -5,8 +5,12 @@ Unit tests.
 import unittest
 from unittest import mock
 
+from django.http import Http404
+
 from linguatec_lexicon_frontend.templatetags import linguatec
 from linguatec_lexicon_frontend.utils import is_regular_verb
+from linguatec_lexicon_frontend.views import (WordByURIDetailView,
+                                              WordDetailBySlug, WordDetailView)
 
 
 class RenderEntryTestCase(unittest.TestCase):
@@ -117,6 +121,55 @@ class IsRegularVerbTestCase(unittest.TestCase):
         self.assertFalse(is_regular_verb(word))
 
 
+class WordRedirectEncodingTestCase(unittest.TestCase):
+    @mock.patch('linguatec_lexicon_frontend.views.reverse')
+    def test_word_detail_redirect_uses_raw_term(self, reverse_mock):
+        reverse_mock.return_value = '/words/ar-es/camin%C3%A9/'
+        view = WordDetailView()
+        view.get_word = mock.Mock(return_value={'lexicon': 'ar-es', 'term': 'caminé'})
+
+        output = view.get_redirect_url()
+
+        self.assertEqual('/words/ar-es/camin%C3%A9/', output)
+        reverse_mock.assert_called_once_with('word-detail-uri', args=('ar-es', 'caminé'))
+
+    @mock.patch('linguatec_lexicon_frontend.views.reverse')
+    def test_word_detail_by_slug_redirect_uses_raw_term(self, reverse_mock):
+        reverse_mock.return_value = '/words/ar-es/camin%C3%A9/'
+        view = WordDetailBySlug()
+        view.get_word = mock.Mock(return_value={'lexicon': 'ar-es', 'term': 'caminé'})
+
+        output = view.get_redirect_url()
+
+        self.assertEqual('/words/ar-es/camin%C3%A9/', output)
+        reverse_mock.assert_called_once_with('word-detail-uri', args=('ar-es', 'caminé'))
+
+
+class WordByURIDetailDecodeTestCase(unittest.TestCase):
+    @mock.patch('linguatec_lexicon_frontend.views.call_api')
+    def test_get_word_decodes_legacy_double_encoded_term(self, call_api_mock):
+        call_api_mock.return_value = {'id': 1, 'term': 'caminé', 'lexicon': 'ar-es', 'entries': []}
+        view = WordByURIDetailView()
+        view.lexicons = [{'slug': 'ar-es'}]
+        # Django decodes one layer before assigning path kwargs.
+        view.kwargs = {'lexicon': 'ar-es', 'word': 'camin%C3%A9'}
+
+        word = view.get_word()
+
+        self.assertEqual('caminé', word['term'])
+        call_api_mock.assert_called_once_with('words/exact/', params={'l': 'ar-es', 'q': 'caminé'})
+
+    @mock.patch('linguatec_lexicon_frontend.views.call_api')
+    def test_get_word_raises_404_when_not_found(self, call_api_mock):
+        call_api_mock.return_value = None
+        view = WordByURIDetailView()
+        view.lexicons = [{'slug': 'ar-es'}]
+        view.kwargs = {'lexicon': 'ar-es', 'word': 'camin%C3%A9'}
+
+        with self.assertRaises(Http404):
+            view.get_word()
+
+
 @mock.patch(
     'linguatec_lexicon_frontend.utils.retrieve_gramcats',
     return_value=[
@@ -173,4 +226,6 @@ class HightlightInlineGramCats(unittest.TestCase):
         expected = "Redamar glarimas. Manar d'os uellos un liquido."
 
         output = linguatec.highlight_gramcats_inline(input)
+        self.assertEqual(expected, output)
+        self.assertEqual(expected, output)
         self.assertEqual(expected, output)
